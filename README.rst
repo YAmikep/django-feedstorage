@@ -9,21 +9,22 @@ and notifying subscribers only when there are new entries.
 Installation
 ============
 
-#. Dependencies
-    requests and lxml
+* Dependencies:
+
+requests and lxml
     
-#. Run the following command inside this directory:
+* Run the following command inside this directory::
 
-        python setup.py install
+    python setup.py install
 
-    Or if you're using ``pip``::
+Or if you're using ``pip``::
 
-        pip install django-feedstorage
+    pip install django-feedstorage
 
-    Or if you'd prefer you can simply place the included ``feedstorage``
-    directory somewhere on your Python path, or symlink to it from
-    somewhere on your Python path; this is useful if you're working from a
-    Mercurial checkout.
+Or if you'd prefer you can simply place the included ``feedstorage``
+directory somewhere on your Python path, or symlink to it from
+somewhere on your Python path; this is useful if you're working from a
+Mercurial checkout.
 
 #. Add `feedstorage` to your `INSTALLED_APPS` setting::
 
