@@ -42,7 +42,7 @@ Update the `INSTALLED_APPS` setting of your Django project::
 
 If you are using South, run the migrations::
 
-    ./manage.py migrate feedstorage
+    ./manage.py migrate feedmapper
 
 Otherwise, run ``syncdb``::
 
@@ -72,13 +72,6 @@ with:
 * ``dispatch_uid``: A unique identifier for a signal receiver in cases where duplicate signals may be sent. See Preventing duplicate signals for more information in Django documentation.
 * ``callback``: a callable function which will be notified of the new entries
 
-That's it, you do not need to take care of creating anything in the feedstorage application.
-When you subscribe to a Feed that does not already exist in the feedstorage, it will be created and enabled to be fetched. you will then be notified when there are new entries.
-When you unsubscribe to a Feed, it is not deleted in the feedstorage and will still be fetched as long as it is enabled. This
-allows the feedstorage to keep storing the entries even though there are no more subscribers since this is what it is made for.
-You might need them later.
-You can still manually disabled it in the admin or delete it completely if you want.
-
 * Example::
     
     # Here is my callback
@@ -105,11 +98,11 @@ Scheduling: automatic fetching
 
 You can manually launch the fetching of the Feeds from the admin but to really make it powerful, you should make it automatic.
 
-For now, the application does not take care of scheduling so you can set up a cron job and use the ``feedstorage_fetch_all`` management command. 
+For now, the application does not take care of scheduling so you can set up a cron job and use the ``feedstorage_fetch`` management command. 
 This management command fetches all the enabled Feeds.
 Make sure you have the ``DJANGO_SETTINGS_MODULE`` environment variable set and add the following to your crontab::
 
-    * * * * * /full/path/to/manage.py feedstorage_fetch_all
+    * * * * * /full/path/to/manage.py feedstorage_fetch    
     
 Logging
 =======
@@ -239,9 +232,7 @@ For most of the users, you will just want to change where the log and files are 
 Next things to do::
 -------------------
 
-* write tests 
-    * wrong url, url not a feed, feed with/without namespace, rss feed, atom feed, etc.
-    * Hub: subscribe to an existing/non existing url, correct callback, uncallable callback, unexisting callback
+* write tests
 * write more documentation
 * test with former versions of python and django
 * add Scheduling in the admin
