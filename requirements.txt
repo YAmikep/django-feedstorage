@@ -1,0 +1,4 @@
+# See http://pip-installer.org/requirement-format.html for more information.
+Django==1.4
+requests==0.13.2
+lxml==2.3.4 #On Windows, use easy_install directly with the binary. See http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml
