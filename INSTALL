@@ -9,7 +9,7 @@ The ``requests`` and ``lxml`` modules are required.
 For now, it has just been tested with: Python 2.7, Django 1.4, requests 0.13.2 and lxml 2.3.4
 but feel free to try it with other versions and let me know.
 
-You can use the :file:`requirements.txt` file with pip::
+You can use the file ``requirements.txt`` with pip::
 
     pip install -r requirements.txt
     
