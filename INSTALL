@@ -45,9 +45,8 @@ If you are using South, run the migrations::
 Otherwise, run ``syncdb``::
 
     ./manage.py syncdb
-    
-.. admonition:: 
 
-    Note that for now, this application has just been tested with Python 2.7 and a 
-    functional installation of Django 1.4. You can obtain Python
-    from http://www.python.org/ and Django from http://www.djangoproject.com/.
+
+Note that for now, this application has just been tested with Python 2.7 and a 
+functional installation of Django 1.4. You can obtain Python
+from http://www.python.org/ and Django from http://www.djangoproject.com/.
