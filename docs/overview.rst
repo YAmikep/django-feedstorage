@@ -4,8 +4,8 @@ Supported FEED formats:
 For now, just the two main common feed formats are supported: RSS and Atom.
 
 
-Quick example of how to use the Hub interface to subscribe/unsubscribe to a Feed
-================================================================================
+Quick HOW-TO: use the Hub interface to subscribe/unsubscribe to a Feed
+======================================================================
 In your application, just use the provided Hub interface:
 
 - Hub.subscribe(feed_url, callback, dispatch_uid) when you want to be notified of new entries for a specific feed
@@ -26,8 +26,8 @@ with:
         
         # Work with entries now
         for entry in entries:
-        	print entry.xml
-        	# xml pieces are available through entry.xml
+            print entry.xml
+            # xml pieces are available through entry.xml
 
     # I am going to use the Hub interface to subscribe/unsubscribe to a Feed
     from feedstorage.hub import Hub
@@ -36,7 +36,7 @@ with:
     Hub.subscribe('https://www.djangoproject.com/rss/community/blogs/', new_entries_detected, 'my_app')
     Hub.subscribe('https://www.djangoproject.com/rss/community/jobs/', new_entries_detected, 'my_app')
 
-    # For now, every time there are new entries, I will be notified and can handle them.
+    # Now, every time there are new entries, I will be notified and my callback will handle them.
 
     # Later on, I can unsubscribe to a Feed to not be notified anymore about new entries.
     Hub.unsubscribe('https://www.djangoproject.com/rss/community/blogs/', new_entries_detected, 'my_app')
@@ -59,7 +59,7 @@ Make sure you have the ``DJANGO_SETTINGS_MODULE`` environment variable set and a
 Logging
 =======
 
-By default, the feedstorage application createsa log file to track what is going on.
+By default, the feedstorage application creates a log file to track what is going on.
 It also saves the Feed as a file when an error occurs while parsing.
 This ensures that no version of the Feed will be lost and allows an administrator to go through it later on.
 
@@ -78,7 +78,7 @@ For example, based on the Django tutorial, the structure would look like this::
             urls.py
             wsgi.py
 
-You can plug your own logger if you have own.
+You can use your own logger if you already have own. (see below)
          
             
 Configuration
@@ -111,8 +111,7 @@ Default: a dict with the location key being the path to the logs/feedstorage_fil
 
 A dict listing the arguments for the storage class.
 
-For a FileSystemStorage class, the location is required. 
-For example, you can change where you want to save those files.::
+For a FileSystemStorage class, the location is required.::
 
     'FILE_STORAGE_ARGS': {
             'location': '/my/path/to/logs/files/',
@@ -126,10 +125,8 @@ Default: ``'feedstorage'``
 The name of the logger. 
 If you have defined a logger somewhere else and want to use it, this is possible by changing this setting.
 
-.. admonition:: 
-
-    If you provide an existing logger which has at least one handler, 
-    it will be used and the following settings will be ignored.
+If you provide an existing logger which has at least one handler, 
+it will be used and the following settings will be ignored.
 
 ``LOGGER_FORMAT``
 -----------------
