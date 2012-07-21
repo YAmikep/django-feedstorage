@@ -15,11 +15,10 @@ directory; for instructions on how to use this application, and on
 what it provides, see the file "overview.rst" in the "docs/"
 directory.
 
-
   
   
 Next things to do
--------------------
+=================
 
 * write tests
 * write more documentation
