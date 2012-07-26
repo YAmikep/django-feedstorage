@@ -20,7 +20,7 @@ directory.
 Next things to do
 =================
 
-* write tests
+* write test cases
 * write more documentation
 * test with older versions of python and django
 * add Scheduling in the admin

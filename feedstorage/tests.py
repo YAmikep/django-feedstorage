@@ -1,5 +1,5 @@
 """
-TODO: write tests
+TODO: write test cases
 """
 
 from django.test import TestCase
