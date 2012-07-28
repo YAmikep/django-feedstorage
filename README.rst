@@ -20,7 +20,9 @@ directory.
 Next things to do
 =================
 
-* write test cases
+See the roadmap on Trello: https://trello.com/b/zPAnRZsL
+
+* write tests cases
 * write more documentation
 * test with older versions of python and django
 * add Scheduling in the admin
