@@ -1,6 +1,5 @@
 # Django
 from django.contrib import admin
-from django.utils.translation import ugettext as _
 
 # Internal
 from .models import Feed, FetchStatus, Entry, Subscription
@@ -17,7 +16,7 @@ class FeedAdmin(admin.ModelAdmin):
     def fetch(self, request, queryset):
         Feed.fetch_collection(queryset, '[FeedAdmin]')
 
-    fetch.short_description = _('Fetch')
+    fetch.short_description = 'Fetch'
 
 
 class FetchStatusAdmin(admin.ModelAdmin):
@@ -26,8 +25,9 @@ class FetchStatusAdmin(admin.ModelAdmin):
 
 
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('xml',)
+    list_display = ('feed', 'uid_hash', 'add_date', 'xml',)
     list_filter = ('feed',)
+    search_fields = ('feed__url', 'uid_hash',)
 
 
 class SubscriptionAdmin(admin.ModelAdmin):
