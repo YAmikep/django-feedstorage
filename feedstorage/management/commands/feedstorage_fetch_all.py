@@ -10,5 +10,10 @@ class Command(BaseCommand):
     help = 'Fetch all the enabled Feeds.'
 
     def handle(self, *args, **options):
-        feeds = Feed.objects.filter(enabled=True)
-        Feed.fetch_collection(feeds, '[Commands]')
+
+        try:
+            feeds = Feed.objects.filter(enabled=True)
+            t = Feed.fetch_collection(feeds, '[Commands]')
+            self.stdout.write('%s enabled Feeds fetched in %ss.' % (feeds.count(), t))
+        except Exception as err:
+            self.stderr.write('Cannot fetch the enabled Feeds. \n%s' % (err,))
