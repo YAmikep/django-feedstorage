@@ -1,4 +1,4 @@
-include INSTALL
+include INSTALL.rst
 include LICENSE
 include MANIFEST.in
 include README.rst
