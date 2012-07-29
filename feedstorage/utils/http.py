@@ -1,25 +1,33 @@
-# Third-party apps
-import requests
+# Dependencies: third-party apps
+import requests  # http://docs.python-requests.org
 
 # Django
 from django.utils import timezone
 
-# Internal
-from ..utils import _return
 
-
-##############
-# Exceptions #
-##############
 class RequestsModuleError(Exception):
     """An error occured in the Requests third-party module."""
     pass
 
 
+def _return(*args):
+    """Selects which value to return."""
+    to_return = ()
+
+    for arg in args:
+        cond, value = arg
+        if cond:
+            to_return += (value,)
+
+    if len(to_return) == 1:
+        return to_return[0]
+    return to_return
+
+
 def get_content(url, etag=None, use_http_compression=True, return_etag=False, return_status_code=False, return_datetime=False, return_response=False):
     """Fetches data and metadata from an URL.
 
-    Uses the Requests module (http://docs.python-requests.org): it is a simple wrapper of the requests.get method.
+    Dependency: requests module (http://docs.python-requests.org): HTTP library, written in Python, for human beings.
 
     Args:
         url: The URL to fetch.
