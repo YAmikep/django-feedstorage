@@ -7,7 +7,7 @@ from .settings import (
     FILE_STORAGE, FILE_STORAGE_ARGS,
     LOGGER_NAME, LOG_FILE, LOG_SIZE, LOGGER_FORMAT, LOG_LEVEL
 )
-from .utils import LoggerWithStorage
+from .utils.loggers import LoggerWithStorage
 
 
 class DefaultFileStorage(LazyObject):
