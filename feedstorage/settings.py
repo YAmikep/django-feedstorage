@@ -22,7 +22,7 @@ DEFAULT_SETTINGS = {
 
     # Logging settings
     'LOGGER_NAME': 'feedstorage',
-    'LOGGER_FORMAT': '%(asctime)s %(levelname)s %(module)s %(message)s',
+    'LOGGER_FORMAT': '%(asctime)s %(levelname)s %(message)s',
     'LOG_FILE': os.path.join(PROJECT_ROOT, 'logs/feedstorage.log'),
     # Maximum size of one log file: when the size is reached, the file is archived and a new file is created.
     'LOG_SIZE': 5 * 1024 * 2 ** 10,  # 5 MB
