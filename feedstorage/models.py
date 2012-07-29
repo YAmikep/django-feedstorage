@@ -1,3 +1,6 @@
+# Python stdlib
+import hashlib
+
 # Django
 from django.db import models, DatabaseError
 from django.utils import timezone
@@ -9,10 +12,10 @@ from lxml import etree
 
 # Internal
 from .settings import USE_HTTP_COMPRESSION
-from .utils import http, md5
 from .log import default_logger as logger
 from .managers import FeedManager, FetchStatusManager, EntryManager, SubscriptionManager
 import signals
+from .utils import http
 from .utils.serializers import deserialize_function, serialize_function
 
 FEED_FORMAT = {
@@ -60,7 +63,15 @@ class Feed(models.Model):
 
     @classmethod
     def fetch_collection(cls, feeds, prefix_log):
-        """Fetches a collection of Feed."""
+        """Fetches a collection of Feed.
+
+        Args:
+            feeds: the collection of Feed to fetch
+            prefix_log: a prefix to use in the log to know who called it
+
+        Returns:
+            The time elapsed in seconds.
+        """
         start = timezone.now()
         log_desc = '%s - Fetching %s Feeds' % (prefix_log, feeds.count())
 
@@ -74,6 +85,8 @@ class Feed(models.Model):
 
         delta = timezone.now() - start
         logger.info('%s in %ss => end' % (log_desc, delta.total_seconds()))
+
+        return delta
 
     def fetch(self):
         """Fetches a Feed and creates the new entries. A Fetch status report is also created."""
@@ -149,9 +162,9 @@ class Feed(models.Model):
         if error_msg:
             # Store the file if it has been downloaded
             if data:
-                error_msg += '\n' + logger.store(logger.make_filename(self.url, status.timestamp_start), data)
+                error_msg += '\n' + logger.store(data, self.url, status.timestamp_start)
             status.error_msg = error_msg
-            logger.error(log_desc + error_msg)
+            logger.error(log_desc + '\n' + error_msg)
         else:
             if status_code == 304:
                 logger.info('%s => 304 Feed not modified.' % (log_desc,))
@@ -192,11 +205,18 @@ class Feed(models.Model):
         return None
 
     @classmethod
+    def calc_hash(cls, data):
+        """Calculates hash."""
+        m = hashlib.md5()
+        m.update(data)
+        return m.hexdigest()
+
+    @classmethod
     def make_uid(cls, entry):
         """Make a suitable uid for the storage."""
         uid = cls._get_entry_id(entry)
         if uid:
-            return md5(uid)
+            return cls.calc_hash(uid)
 
         return None
 
@@ -257,7 +277,7 @@ class Entry(models.Model):
 class Subscription(models.Model):
     """A subscription from a callback to a Feed."""
     feed = models.ForeignKey(Feed)
-    callback = models.TextField()
+    callback = models.TextField(db_index=True)
     dispatch_uid = models.CharField(max_length=255)
 
     add_date = models.DateTimeField('date created', auto_now_add=True)
@@ -298,16 +318,16 @@ class Subscription(models.Model):
     def load(self):
         """Loads the subscription, i.e. connects it to the signal so that the receiver will be notified."""
         try:
-            signals.new_entries_connect(self.feed, deserialize_function(self.callback), self.dispatch_uid)
-            logger.info('%s - Loading => [OK]' % (self.log_desc,))
+            if signals.new_entries_connect(self.feed, deserialize_function(self.callback), self.dispatch_uid):
+                logger.info('%s - Loading => [OK]' % (self.log_desc,))
         except Exception as e:
             logger.error('%s - Loading => The receiver cannot be connected. [KO]\n%s' % (self.log_desc, e))
 
     def unload(self):
         """Unloads the subscription, i.e. disconnects it from the  signal."""
         try:
-            signals.new_entries_disconnect(self.feed, deserialize_function(self.callback), self.dispatch_uid)
-            logger.info('%s - Unloading => [OK]' % (self.log_desc,))
+            if signals.new_entries_disconnect(self.feed, deserialize_function(self.callback), self.dispatch_uid):
+                logger.info('%s - Unloading => [OK]' % (self.log_desc,))
         except Exception as e:
             logger.error('%s - Unloading => The receiver cannot be disconnected. [KO]\n%s' % (self.log_desc, e))
 
@@ -334,7 +354,7 @@ class Subscription(models.Model):
     @classmethod
     def prepare_callback(cls, callback):
         """Prepares a callback to be stored in the DB. i.e. converts it to a string.
-        
+
         Returns:
             A string.
         """
@@ -343,10 +363,17 @@ class Subscription(models.Model):
         return callback
 
     @classmethod
+    def _calc_dispatch_uid_hash(cls, data):
+        """Calculates hash."""
+        m = hashlib.md5()
+        m.update(data)
+        return m.hexdigest()
+
+    @classmethod
     def prepare_dispatch_uid(cls, dispatch_uid, callback):
         """Creates a dispatch_uid."""
         if not dispatch_uid:
-            dispatch_uid = md5(cls.prepare_callback(callback))
+            dispatch_uid = cls._calc_dispatch_uid_hash(cls.prepare_callback(callback))
         return dispatch_uid
 
 
