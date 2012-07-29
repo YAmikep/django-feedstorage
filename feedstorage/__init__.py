@@ -1,7 +1,7 @@
 """
 Based entirely on Django's own ``setup.py`` for now.
 """
-VERSION = (0, 1, 0, 'alpha', 1)
+VERSION = (0, 1, 0, 'final', 0)
 
 
 def get_version(version=None):
