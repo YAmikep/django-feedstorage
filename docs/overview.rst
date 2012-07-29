@@ -13,9 +13,10 @@ In your application, just use the provided Hub interface:
 
 with:
 
-* ``feed_url``: The URL of the Feed
+* ``feed_url``: The URL of the feed
+* ``callback``: a callable function which will be called when there are new entries. Must be a function in a module or a classmethod. Do not use a staticmethod.
 * ``dispatch_uid``: A unique identifier for a signal receiver in cases where duplicate signals may be sent. See Preventing duplicate signals for more information in Django documentation.
-* ``callback``: a callable function which will be notified of the new entries
+
 
 * Example::
     
@@ -89,6 +90,22 @@ It mainly controls the way logging is managed.
 You can change the default behavior by adding a dict 
 called ``FEED_STORAGE_SETTINGS`` to your ``settings.py`` file.
 
+* **Example**
+
+For most of the users, you will just want to change where the log and files are saved, all you have to do is::
+
+    FEED_STORAGE_SETTINGS = {
+        'FILE_STORAGE_ARGS': {
+            # I want to change the location of the saved files
+            'location': '/my/path/logs/files/',
+        },
+        # I want to change the location of the log file
+        'LOG_FILE': '/my/path/logs/mylogfile.log',
+    }
+
+See other options below.
+
+
 ``USE_HTTP_COMPRESSION``
 ------------------------
 
@@ -131,12 +148,10 @@ it will be used and the following settings will be ignored.
 ``LOGGER_FORMAT``
 -----------------
 
-Default: ``'%(asctime)s %(levelname)s %(module)s %(message)s'``
+Default: ``'%(asctime)s %(levelname)s %(message)s'``
 The format used to log.
 
-.. admonition:: 
-
-    This setting is ignored if the logger name references an existing logger containing at least one handler.
+Note: This setting is ignored if the logger name references an existing logger containing at least one handler.
 
 ``LOG_FILE``
 ------------
@@ -145,9 +160,7 @@ Default: the path to the logs/feedstorage.log file as discussed above.
 
 The path to the log file.
 
-.. admonition:: 
-
-    This setting is ignored if the logger name references an existing logger containing at least one handler.
+Note: This setting is ignored if the logger name references an existing logger containing at least one handler.
 
 ``LOG_SIZE``
 ------------
@@ -157,6 +170,7 @@ Default: ``5 * 1024 * 2 ** 10, #5 MB``
 The maximum size of one log file.
 When the size is reached, the file is archived and a new file is created.
 
+Note: This setting is ignored if the logger name references an existing logger containing at least one handler.
 
 ``LOG_LEVEL``
 -------------
@@ -165,15 +179,4 @@ Default: logging.INFO
 
 The level of the logger.
 
-* Example:
-
-For most of the users, you will just want to change where the log and files are saved, all you have to do is::
-
-    FEED_STORAGE_SETTINGS = {
-        'FILE_STORAGE_ARGS': {
-            # I want to change the location of the saved files
-            'location': '/my/path/logs/files/',
-        },
-        # I want to change the location of the log file
-        'LOG_FILE': '/my/path/logs/mylogfile.log',
-    }
+Note: This setting is ignored if the logger name references an existing logger containing at least one handler.

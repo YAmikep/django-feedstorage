@@ -10,15 +10,15 @@ It has 2 dependencies: ``requests`` and ``lxml``.
 For now, it has just been tested with: Python 2.7, Django 1.4, requests 0.13.2 and lxml 2.3.4
 but feel free to try it with other versions and let me know.
 
-For installation instructions, see the file "INSTALL" in this
+For installation instructions, see the file ``INSTALL.rst`` in this
 directory; for instructions on how to use this application, and on
-what it provides, see the file "overview.rst" in the "docs/"
+what it provides, see the file ``overview.rst`` in the ``docs/``
 directory.
 
   
   
 Next things to do
-=================
+-----------------
 
 See the roadmap on Trello: https://trello.com/b/zPAnRZsL
 
