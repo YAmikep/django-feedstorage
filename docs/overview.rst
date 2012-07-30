@@ -1,7 +1,7 @@
 Supported FEED formats:
 ======================
 
-For now, just the two main common feed formats are supported: RSS and Atom.
+As for now, just the two main common feed formats are supported: RSS and Atom.
 
 
 Quick HOW-TO: use the Hub interface to subscribe/unsubscribe to a Feed
