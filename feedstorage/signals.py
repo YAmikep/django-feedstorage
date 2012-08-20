@@ -19,13 +19,13 @@ def receiver_exist(receiver, signal, dispatch_uid):
     else:
         lookup_key = (_make_id(receiver), _make_id(None))
 
-    signal.lock.acquire()
+    LOCK.acquire()
     try:
         for r_key, _ in signal.receivers:
             if r_key == lookup_key:
                 return True
     finally:
-        signal.lock.release()
+        LOCK.release()
 
     return False
 
